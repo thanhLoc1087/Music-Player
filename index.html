@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music player</title>
+    <link rel="stylesheet" href="/asset/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background" style="background-image: url('/asset/images/home.JPG')"></div>
+    <div class="player">
+        <!-- Dashboard -->
+        <div class="dashboard">
+          <!-- Header -->
+          <header>
+            <h4>Now playing:</h4>
+            <h2>Wanna Go Home</h2>
+          </header>
+      
+          <!-- CD -->
+          <div class="cd">
+              <div class="cd-thumb" style="background-image: url('/asset/images/home.JPG')">
+                <div class="cd-center"></div>
+            </div>
+          </div>
+      
+          <!-- Control -->
+          <div class="control">
+            <div class="btn btn-repeat" title="Loop">
+              <i class="fas fa-redo"></i>
+            </div>
+            <div class="btn btn-prev">
+              <i class="fas fa-step-backward" title="Previous"></i>
+            </div>
+            <div class="btn btn-toggle-play"  title="Play">
+              <i class="fas fa-pause icon-pause"></i>
+              <i class="fas fa-play icon-play"></i>
+            </div>
+            <div class="btn btn-next"  title="Next">
+              <i class="fas fa-step-forward"></i>
+            </div>
+            <div class="btn btn-random"  title="Randomize">
+              <i class="fas fa-random"></i>
+            </div>
+          </div>
+      
+          <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
+      
+          <audio id="audio" src=""></audio>
+        </div>
+      
+        <!-- Playlist -->
+        <div class="playlist">
+          
+        </div>
+      </div>
+      
+      <!-- Design from: https://static.collectui.com/shots/3671744/musicloud-revolutionary-app-for-music-streaming-large -->
+</body>
+
+<script>
+    const $ = document.querySelector.bind(document);
+    const $$ = document.querySelectorAll.bind(document);
+
+    const app = {
+        currIndex: 0,
+
+        songs: [
+            {
+                name: 'Queen Of Disaster',
+                singer: 'Lana Del Rey',
+                path: './asset/songs/QueenOfDisaster.mp3',
+                img: './asset/images/Lana_Del_Rey.JPG'
+            },
+            {
+                name: 'Wanna Go Home',
+                singer: 'Akane, Sosu, Sora',
+                path: './asset/songs/WannaGoHome.mp3',
+                img: './asset/images/home.JPG'
+            },
+            {
+                name: 'Church Girl',
+                singer: 'Beyonce',
+                path: './asset/songs/CHURCHGIRL.mp3',
+                img: './asset/images/beyonce.JPG'
+            },
+            {
+                name: 'Cuff It',
+                singer: 'Beyonce',
+                path: './asset/songs/CUFFIT.mp3',
+                img: './asset/images/beyonce.JPG'
+            },
+            {
+                name: 'I Like You (A Happier Song)',
+                singer: 'Post Malone ft.Doja Cat',
+                path: './asset/songs/ILikeYou.mp3',
+                img: './asset/images/postmalone.JPG'
+            },
+            {
+                name: 'Say So (MTV 2020)',
+                singer: 'Doja Cat',
+                path: './asset/songs/SaySo.mp3',
+                img: './asset/images/dojacat.JPG'
+            },
+            {
+                name: 'Oxytocin',
+                singer: 'Billie Eilish',
+                path: './asset/songs/oxytocin.mp3',
+                img: './asset/images/billieeilish.JPG'
+            },
+        ],
+        
+        render: function() {
+            const html = this.songs.map(song => {
+                return `<div class="song">
+                        <div class="thumb" style="background-image: url('${song.img}')">
+                        </div>
+                    <div class="body">
+                        <h3 class="title">${song.name}</h3>
+                        <p class="author">${song.singer}</p>
+                    </div>
+                    <div class="option">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>`
+            })
+            $('.playlist').innerHTML = html.join('');
+        },
+        defineProperties: function() {
+            Object.defineProperty(this, 'currentSong', {
+                get: function() {
+                    return this.songs[this.currIndex];
+                }
+            })
+        },
+
+        handleEvents: function() {
+            const cd = $('.cd');
+            const cdWidth = cd.offsetWidth;
+
+            document.onscroll = function() {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const newCDWidth = cdWidth - scrollTop;
+                cd.style.width = newCDWidth > 0 ? newCDWidth + 'px': 0;
+                cd.style.opacity = newCDWidth/cdWidth;
+            }
+        },
+
+        loadCurrentSong: function() {
+            const songName = $('header h2');
+            const thumb = $('.cd-thumb');
+            const audio = $('#audio');
+            const background = $('.background');
+
+            songName.textContent = this.currentSong.name;
+            thumb.style.backgroundImage = `url('${this.currentSong.img}')`
+            audio.style.src = `url('${this.currentSong.path}')`
+            background.style.backgroundImage = `url('${this.currentSong.img}')`
+        },
+
+        start: function () {
+            //Object definition
+            this.defineProperties();
+            // Events Listener / Handler
+            this.handleEvents();
+            // Load first song of playlist into Dashboard
+            this.loadCurrentSong();
+            // Playlists Rendering
+            this.render();
+        },
+    }
+
+    app.start();
+
+</script>
+
+</html>
