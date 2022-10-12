@@ -9,32 +9,32 @@ const $ = document.querySelector.bind(document);
             {
                 name: 'Queen Of Disaster',
                 singer: 'Lana Del Rey',
-                path: 'asset/songs/QueenOfDisaster.mp3',
-                img: 'asset/images/Lana_Del_Rey.JPG'
+                path: './asset/songs/QueenOfDisaster.mp3',
+                img: './asset/images/Lana_Del_Rey.JPG'
             },
             {
                 name: 'Wanna Go Home',
                 singer: 'Akane, Sosu, Sora',
-                path: 'asset/songs/WannaGoHome.mp3',
-                img: 'asset/images/home.JPG'
+                path: './asset/songs/WannaGoHome.mp3',
+                img: './asset/images/home.JPG'
             },
             {
                 name: 'Church Girl',
                 singer: 'Beyonce',
-                path: 'asset/songs/CHURCHGIRL.mp3',
-                img: 'asset/images/beyonce.JPG'
+                path: './asset/songs/CHURCHGIRL.mp3',
+                img: './asset/images/beyonce.JPG'
             },
             {
                 name: 'Cuff It',
                 singer: 'Beyonce',
-                path: 'asset/songs/CUFFIT.mp3',
-                img: 'asset/images/beyonce.JPG'
+                path: './asset/songs/CUFFIT.mp3',
+                img: './asset/images/beyonce.JPG'
             },
             {
                 name: 'I Like You (A Happier Song)',
                 singer: 'Post Malone ft.Doja Cat',
-                path: 'asset/songs/ILikeYou.mp3',
-                img: 'asset/images/postmalone.JPG'
+                path: './asset/songs/ILikeYou.mp3',
+                img: './asset/images/postmalone.JPG'
             },
             {
                 name: 'Say So (MTV 2020)',
@@ -45,8 +45,8 @@ const $ = document.querySelector.bind(document);
             {
                 name: 'Oxytocin',
                 singer: 'Billie Eilish',
-                path: 'asset/songs/oxytocin.mp3',
-                img: 'asset/images/billieeilish.JPG'
+                path: './asset/songs/oxytocin.mp3',
+                img: './asset/images/billieeilish.JPG'
             },
         ],
         
