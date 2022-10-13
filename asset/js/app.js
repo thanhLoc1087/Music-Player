@@ -139,6 +139,19 @@ const $ = document.querySelector.bind(document);
                 const seekTime = e.target.value * audio.duration / 100;
                 audio.currentTime = seekTime;
             }
+            
+            // Next Song 
+            const nextBtn = $('.btn-next');
+            nextBtn.onclick = function() {
+                _this.nextSong();
+                audio.play();
+            }
+            // Prev Song 
+            const prevBtn = $('.btn-prev');
+            nextBtn.onclick = function() {
+                _this.prevSong();
+                audio.play();
+            }
         },
 
         loadCurrentSong: function() {
@@ -151,6 +164,22 @@ const $ = document.querySelector.bind(document);
             thumb.style.backgroundImage = `url('${this.currentSong.img}')`
             audio.src = this.currentSong.path;
             background.style.backgroundImage = `url('${this.currentSong.img}')`
+        },
+        
+        nextSong: function() {
+            this.currIndex++;
+            if (this.currIndex >= this.songs.length) {
+                this.currIndex = 0;
+            }
+            this.loadCurrentSong();
+        },
+        
+        prevSong: function() {
+            this.currIndex--;
+            if (this.currIndex < 0) {
+                this.currIndex = this.songs.length - 1;
+            }
+            this.loadCurrentSong();
         },
 
         start: function () {
