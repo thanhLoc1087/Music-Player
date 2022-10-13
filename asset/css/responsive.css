@@ -1,0 +1,33 @@
+/* PC */
+@media (min-width: 64em) {
+    .player .dashboard {
+        top: 50%;
+        transform: translateX(0) translateY(-50%);
+        right: 50%;
+        left: auto;
+        margin-right: 32px;
+        border-radius: 8px;
+    }
+    .cd {
+        opacity: 1 !important;
+        width: 200px !important;
+    }
+    .playlist {
+        position: absolute;
+        width: 400px;
+        top: 32px;
+        left: 50%;
+        margin-left: 32px;
+        margin-top: 0;
+    }
+}
+
+/* Tablet */
+@media (max-width: 63.9375em) {
+
+}
+
+/* Mobile */
+@media (max-width: 46.1875em) {
+
+}

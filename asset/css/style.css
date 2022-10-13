@@ -33,11 +33,11 @@ html {
 
 .player .dashboard {
     padding: 16px;
-    width: 100%;
+    width: calc(100% - 8px);
     max-width: 480px;
     text-align: center;
     position: fixed;
-    top: 0;
+    top: 4px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgb(48, 48, 48);
@@ -47,6 +47,9 @@ html {
 .dashboard h4 {
     font-size: 12px;
     color: var(--primary-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .dashboard h2 {
@@ -178,6 +181,7 @@ html {
 
 .song .body {
     flex: 1;
+    width: 46px;
     margin: 0 8px;
     cursor: pointer;
 }
@@ -185,6 +189,9 @@ html {
 .body .title {
     font-size: 18px;
     color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .body .author {
@@ -213,4 +220,73 @@ html {
     color: #fff;
 }
 
-  
+.option-view {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .6);
+    animation: fadeIn 2s ease;
+}
+
+.option-view-window {
+    position: absolute;
+    top: 70%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;   
+    max-width: 480px;
+    padding: 32px;
+    border-radius: 4px;
+    color: var(--text-color);
+    box-shadow: 0 2px 3px rgba(28,28,28);
+    background-color: rgb(48, 48, 48);
+    animation: floatIn .9s ease;
+}
+
+.option-view-body {
+    display: block;
+    margin-bottom: 32px;
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    right: 32px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: 16px;
+    border: 0;
+    border-radius: 4px;
+    height: 40px;
+    display: block;
+    text-align: center;
+}
+
+.btn-close:hover {
+    cursor: pointer;
+    opacity: .8;
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: scaleX(0);
+    } to {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}

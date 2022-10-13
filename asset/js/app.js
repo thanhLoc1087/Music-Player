@@ -3,6 +3,7 @@ const $$ = document.querySelectorAll.bind(document);
 
 const PlAYER_STORAGE_KEY = 'Player';
 
+const dashboard = $('.dashboard');
 const playlist = $('.playlist');
 const thumb = $('.cd-thumb');
 const cd = $('.cd');
@@ -16,7 +17,9 @@ const prevBtn = $('.btn-prev');
 const progress = $('.progress');
 const rdnBtn = $('.btn-random');
 const repeatBtn = $('.btn-repeat');
-
+const optionView = $('.option-view');
+const optionViewBody = $('.option-view-body');
+const closeBtn = $('.btn-close')
 
 const app = {
     currIndex: 0,
@@ -32,46 +35,60 @@ const app = {
 
     songs: [
         {
+            name: 'Billie Jean',
+            singer: 'Michael Jackson',
+            path: './asset/songs/BillieJean.mp3',
+            img: './asset/images/billiejean.PNG',
+            year: ''
+        },
+        {
             name: 'Queen Of Disaster',
             singer: 'Lana Del Rey',
             path: './asset/songs/QueenOfDisaster.mp3',
-            img: './asset/images/Lana_Del_Rey.JPG'
+            img: './asset/images/Lana_Del_Rey.JPG',
+            year: ''
         },
         {
             name: 'Wanna Go Home',
             singer: 'Akane, Sosu, Sora',
             path: './asset/songs/WannaGoHome.mp3',
-            img: './asset/images/home.JPG'
+            img: './asset/images/home.JPG',
+            year: '2013'
         },
         {
             name: 'Church Girl',
             singer: 'Beyonce',
             path: './asset/songs/CHURCHGIRL.mp3',
-            img: './asset/images/beyonce.JPG'
+            img: './asset/images/beyonce.JPG',
+            year: '2022'
         },
         {
             name: 'Cuff It',
             singer: 'Beyonce',
             path: './asset/songs/CUFFIT.mp3',
-            img: './asset/images/beyonce.JPG'
+            img: './asset/images/beyonce.JPG',
+            year: '2022'
         },
         {
             name: 'I Like You (A Happier Song)',
             singer: 'Post Malone ft.Doja Cat',
             path: './asset/songs/ILikeYou.mp3',
-            img: './asset/images/postmalone.JPG'
+            img: './asset/images/postmalone.JPG',
+            year: '2022'
         },
         {
             name: 'Say So (MTV 2020)',
             singer: 'Doja Cat',
             path: './asset/songs/SaySo.mp3',
-            img: './asset/images/dojacat.JPG'
+            img: './asset/images/dojacat.JPG',
+            year: '2020'
         },
         {
             name: 'Oxytocin',
             singer: 'Billie Eilish',
             path: './asset/songs/Oxytocin.mp3',
-            img: './asset/images/billieeilish.JPG'
+            img: './asset/images/billieeilish.JPG',
+            year: '2021'
         },
     ],
     
@@ -110,6 +127,7 @@ const app = {
             const newCDWidth = cdWidth - scrollTop;
             cd.style.width = newCDWidth > 0 ? newCDWidth + 'px': 0;
             cd.style.opacity = newCDWidth/cdWidth;
+            dashboard.style.marginTop = newCDWidth/cdWidth * 4 + 'px';
         }
 
         // Play music
@@ -215,6 +233,22 @@ const app = {
                 _this.render();
                 audio.play();
             }
+            if (e.target.closest('.option')) {
+                let index = Number(e.target.closest('.song').dataset.index);
+                optionViewBody.innerHTML = `
+                    <h2>${_this.songs[index].name}</h2>
+                    <h4>${_this.songs[index].singer}</h4>
+                    <span>Year: ${_this.songs[index].year}</span>
+                    `;
+                optionView.style.visibility = 'visible';
+            }
+        }
+
+        closeBtn.onclick = function() {
+            optionView.style.visibility = 'hidden';
+        }
+        optionView.onclick = function() {
+            optionView.style.visibility = 'hidden';
         }
     },
 
