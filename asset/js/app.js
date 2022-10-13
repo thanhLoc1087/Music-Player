@@ -10,7 +10,7 @@ const $ = document.querySelector.bind(document);
                 name: 'Queen Of Disaster',
                 singer: 'Lana Del Rey',
                 path: './asset/songs/QueenOfDisaster.mp3',
-                img: './asset/images/Lana_Del_Rey.jpg'
+                img: './asset/images/Lana_Del_Rey.JPG'
             },
             {
                 name: 'Wanna Go Home',
@@ -22,31 +22,31 @@ const $ = document.querySelector.bind(document);
                 name: 'Church Girl',
                 singer: 'Beyonce',
                 path: './asset/songs/CHURCHGIRL.mp3',
-                img: './asset/images/beyonce.jpg'
+                img: './asset/images/beyonce.JPG'
             },
             {
                 name: 'Cuff It',
                 singer: 'Beyonce',
                 path: './asset/songs/CUFFIT.mp3',
-                img: './asset/images/beyonce.jpg'
+                img: './asset/images/beyonce.JPG'
             },
             {
                 name: 'I Like You (A Happier Song)',
                 singer: 'Post Malone ft.Doja Cat',
                 path: './asset/songs/ILikeYou.mp3',
-                img: './asset/images/postmalone.jpg'
+                img: './asset/images/postmalone.JPG'
             },
             {
                 name: 'Say So (MTV 2020)',
                 singer: 'Doja Cat',
-                path: 'asset/songs/SaySo.mp3',
-                img: 'asset/images/dojacat.jpg'
+                path: './asset/songs/SaySo.mp3',
+                img: './asset/images/dojacat.JPG'
             },
             {
                 name: 'Oxytocin',
                 singer: 'Billie Eilish',
                 path: './asset/songs/oxytocin.mp3',
-                img: './asset/images/billieeilish.jpg'
+                img: './asset/images/billieeilish.JPG'
             },
         ],
         
@@ -139,7 +139,7 @@ const $ = document.querySelector.bind(document);
                 const seekTime = e.target.value * audio.duration / 100;
                 audio.currentTime = seekTime;
             }
-            
+
             // Next Song 
             const nextBtn = $('.btn-next');
             nextBtn.onclick = function() {
@@ -165,7 +165,7 @@ const $ = document.querySelector.bind(document);
             audio.src = this.currentSong.path;
             background.style.backgroundImage = `url('${this.currentSong.img}')`
         },
-        
+
         nextSong: function() {
             this.currIndex++;
             if (this.currIndex >= this.songs.length) {
@@ -182,7 +182,7 @@ const $ = document.querySelector.bind(document);
             this.loadCurrentSong();
         },
 
-        start: function () {
+        start: function() {
             //Object definition
             this.defineProperties();
             // Events Listener / Handler
