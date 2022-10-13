@@ -148,7 +148,7 @@ const $ = document.querySelector.bind(document);
             }
             // Prev Song 
             const prevBtn = $('.btn-prev');
-            nextBtn.onclick = function() {
+            prevBtn.onclick = function() {
                 _this.prevSong();
                 audio.play();
             }
