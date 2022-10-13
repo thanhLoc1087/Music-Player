@@ -1,197 +1,285 @@
 const $ = document.querySelector.bind(document);
-    const $$ = document.querySelectorAll.bind(document);
+const $$ = document.querySelectorAll.bind(document);
 
-    const app = {
-        currIndex: 0,
-        isPlaying: false,
+const PlAYER_STORAGE_KEY = 'Player';
 
-        songs: [
-            {
-                name: 'Queen Of Disaster',
-                singer: 'Lana Del Rey',
-                path: './asset/songs/QueenOfDisaster.mp3',
-                img: './asset/images/Lana_Del_Rey.JPG'
-            },
-            {
-                name: 'Wanna Go Home',
-                singer: 'Akane, Sosu, Sora',
-                path: './asset/songs/WannaGoHome.mp3',
-                img: './asset/images/home.JPG'
-            },
-            {
-                name: 'Church Girl',
-                singer: 'Beyonce',
-                path: './asset/songs/CHURCHGIRL.mp3',
-                img: './asset/images/beyonce.JPG'
-            },
-            {
-                name: 'Cuff It',
-                singer: 'Beyonce',
-                path: './asset/songs/CUFFIT.mp3',
-                img: './asset/images/beyonce.JPG'
-            },
-            {
-                name: 'I Like You (A Happier Song)',
-                singer: 'Post Malone ft.Doja Cat',
-                path: './asset/songs/ILikeYou.mp3',
-                img: './asset/images/postmalone.JPG'
-            },
-            {
-                name: 'Say So (MTV 2020)',
-                singer: 'Doja Cat',
-                path: './asset/songs/SaySo.mp3',
-                img: './asset/images/dojacat.JPG'
-            },
-            {
-                name: 'Oxytocin',
-                singer: 'Billie Eilish',
-                path: './asset/songs/oxytocin.mp3',
-                img: './asset/images/billieeilish.JPG'
-            },
-        ],
-        
-        render: function() {
-            const html = this.songs.map(song => {
-                return `<div class="song">
-                        <div class="thumb" style="background-image: url('${song.img}')">
-                        </div>
-                    <div class="body">
-                        <h3 class="title">${song.name}</h3>
-                        <p class="author">${song.singer}</p>
-                    </div>
-                    <div class="option">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </div>
-                </div>`
-            })
-            $('.playlist').innerHTML = html.join('');
+const playlist = $('.playlist');
+const thumb = $('.cd-thumb');
+const cd = $('.cd');
+const playBtn = $('.control .btn-toggle-play');
+const player = $('.player');
+const songName = $('header h2');
+const audio = $('#audio');
+const background = $('.background');
+const nextBtn = $('.btn-next');
+const prevBtn = $('.btn-prev');
+const progress = $('.progress');
+const rdnBtn = $('.btn-random');
+const repeatBtn = $('.btn-repeat');
+
+
+const app = {
+    currIndex: 0,
+    isPlaying: false,
+    isRandom: false,
+    isRepeated: false,
+
+    config: JSON.parse(localStorage.getItem(PlAYER_STORAGE_KEY)) || {},
+    setConfig: function(key, value) {
+        this.config[key] = value;
+        localStorage.setItem(PlAYER_STORAGE_KEY, JSON.stringify(this.config));
+    },
+
+    songs: [
+        {
+            name: 'Queen Of Disaster',
+            singer: 'Lana Del Rey',
+            path: './asset/songs/QueenOfDisaster.mp3',
+            img: './asset/images/Lana_Del_Rey.JPG'
         },
-        defineProperties: function() {
-            Object.defineProperty(this, 'currentSong', {
-                get: function() {
-                    return this.songs[this.currIndex];
-                }
-            })
+        {
+            name: 'Wanna Go Home',
+            singer: 'Akane, Sosu, Sora',
+            path: './asset/songs/WannaGoHome.mp3',
+            img: './asset/images/home.JPG'
         },
-
-        handleEvents: function() {
-            const _this = this;
-            const thumb = $('.cd-thumb');
-
-            // Thu/phong cd
-            const cd = $('.cd');
-            const cdWidth = cd.offsetWidth;
-
-            document.onscroll = function() {
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                const newCDWidth = cdWidth - scrollTop;
-                cd.style.width = newCDWidth > 0 ? newCDWidth + 'px': 0;
-                cd.style.opacity = newCDWidth/cdWidth;
-            }
-
-            // Play music
-            const playBtn = $('.control .btn-toggle-play');
-            const player = $('.player');
-            playBtn.onclick = function() {
-                if (_this.isPlaying) {
-                    audio.pause();
-                }
-                else {
-                    audio.play();
-                }
-            }
-
-            // Vinyl CD
-            const cdThumbAnimate = thumb.animate([
-                {transform: 'rotate(360deg)'}
-            ], {
-                duration: 30000,
-                iterations: Infinity
-            })
-            cdThumbAnimate.pause();
-
-            // When song is played
-            audio.onplay = function() {
-                playBtn.title = 'Pause';
-                _this.isPlaying = true;
-                player.classList.add('playing');
-                cdThumbAnimate.play();
-            }
-            // When song is paused
-            audio.onpause = function() {
-                playBtn.title = 'Play';
-                _this.isPlaying = false;
-                player.classList.remove('playing');
-                cdThumbAnimate.pause();
-            }
-
-            // Progress bar
-            const progress = $('.progress');
-            audio.ontimeupdate = function() {
-                if (audio.currentTime) {
-                    const progressPercent = (audio.currentTime / audio.duration * 100)
-                    progress.value = progressPercent;
-                }
-            }
-
-            // Skip part of song 
-            progress.onchange = function(e) {
-                const seekTime = e.target.value * audio.duration / 100;
-                audio.currentTime = seekTime;
-            }
-
-            // Next Song 
-            const nextBtn = $('.btn-next');
-            nextBtn.onclick = function() {
-                _this.nextSong();
-                audio.play();
-            }
-            // Prev Song 
-            const prevBtn = $('.btn-prev');
-            prevBtn.onclick = function() {
-                _this.prevSong();
-                audio.play();
-            }
+        {
+            name: 'Church Girl',
+            singer: 'Beyonce',
+            path: './asset/songs/CHURCHGIRL.mp3',
+            img: './asset/images/beyonce.JPG'
         },
-
-        loadCurrentSong: function() {
-            const songName = $('header h2');
-            const thumb = $('.cd-thumb');
-            const audio = $('#audio');
-            const background = $('.background');
-
-            songName.textContent = this.currentSong.name;
-            thumb.style.backgroundImage = `url('${this.currentSong.img}')`
-            audio.src = this.currentSong.path;
-            background.style.backgroundImage = `url('${this.currentSong.img}')`
+        {
+            name: 'Cuff It',
+            singer: 'Beyonce',
+            path: './asset/songs/CUFFIT.mp3',
+            img: './asset/images/beyonce.JPG'
         },
-
-        nextSong: function() {
-            this.currIndex++;
-            if (this.currIndex >= this.songs.length) {
-                this.currIndex = 0;
-            }
-            this.loadCurrentSong();
+        {
+            name: 'I Like You (A Happier Song)',
+            singer: 'Post Malone ft.Doja Cat',
+            path: './asset/songs/ILikeYou.mp3',
+            img: './asset/images/postmalone.JPG'
         },
-        
-        prevSong: function() {
-            this.currIndex--;
-            if (this.currIndex < 0) {
-                this.currIndex = this.songs.length - 1;
-            }
-            this.loadCurrentSong();
+        {
+            name: 'Say So (MTV 2020)',
+            singer: 'Doja Cat',
+            path: './asset/songs/SaySo.mp3',
+            img: './asset/images/dojacat.JPG'
         },
-
-        start: function() {
-            //Object definition
-            this.defineProperties();
-            // Events Listener / Handler
-            this.handleEvents();
-            // Load first song of playlist into Dashboard
-            this.loadCurrentSong();
-            // Playlists Rendering
-            this.render();
+        {
+            name: 'Oxytocin',
+            singer: 'Billie Eilish',
+            path: './asset/songs/Oxytocin.mp3',
+            img: './asset/images/billieeilish.JPG'
         },
-    }
+    ],
     
-    app.start();
+    render: function() {
+        const html = this.songs.map((song, index) => {
+            return `<div class="song ${index === this.currIndex ? 'active' : ''}" data-index=${index}>
+                    <div class="thumb" style="background-image: url('${song.img}')">
+                    </div>
+                <div class="body">
+                    <h3 class="title">${song.name}</h3>
+                    <p class="author">${song.singer}</p>
+                </div>
+                <div class="option">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>`
+        })
+        $('.playlist').innerHTML = html.join('');
+    },
+    defineProperties: function() {
+        Object.defineProperty(this, 'currentSong', {
+            get: function() {
+                return this.songs[this.currIndex];
+            }
+        })
+    },
+
+    handleEvents: function() {
+        const _this = this;
+
+        // Thu/phong cd
+        const cdWidth = cd.offsetWidth;
+
+        document.onscroll = function() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const newCDWidth = cdWidth - scrollTop;
+            cd.style.width = newCDWidth > 0 ? newCDWidth + 'px': 0;
+            cd.style.opacity = newCDWidth/cdWidth;
+        }
+
+        // Play music
+        playBtn.onclick = function() {
+            if (_this.isPlaying) {
+                audio.pause();
+            }
+            else {
+                audio.play();
+            }
+        }
+
+        // Vinyl CD
+        const cdThumbAnimate = thumb.animate([
+            {transform: 'rotate(360deg)'}
+        ], {
+            duration: 30000,
+            iterations: Infinity
+        })
+        cdThumbAnimate.pause();
+
+        // When song is played
+        audio.onplay = function() {
+            playBtn.title = 'Pause';
+            _this.isPlaying = true;
+            player.classList.add('playing');
+            cdThumbAnimate.play();
+        }
+        // When song is paused
+        audio.onpause = function() {
+            playBtn.title = 'Play';
+            _this.isPlaying = false;
+            player.classList.remove('playing');
+            cdThumbAnimate.pause();
+        }
+
+        // Progress bar
+        audio.ontimeupdate = function() {
+            if (audio.currentTime) {
+                const progressPercent = (audio.currentTime / audio.duration * 100)
+                progress.value = progressPercent;
+            }
+        }
+
+        // Skip part of song 
+        progress.onchange = function(e) {
+            const seekTime = e.target.value * audio.duration / 100;
+            audio.currentTime = seekTime;
+        }
+
+        // Next Song 
+        nextBtn.onclick = function() {
+            if (_this.isRandom) {
+                _this.playRandom();
+            } else {
+                _this.nextSong();
+            }
+            audio.play();
+            _this.render();
+            _this.scrollToACtiveSong();
+        }
+        // Prev Song 
+        prevBtn.onclick = function() {
+            if (_this.isRandom) {
+                _this.playRandom();
+            } else {
+                _this.prevSong();
+            }
+            audio.play();
+            _this.render();
+            _this.scrollToACtiveSong();
+        }
+
+        //Random songs
+        rdnBtn.onclick = function() {
+            _this.isRandom = !_this.isRandom;
+            rdnBtn.classList.toggle('active', _this.isRandom);
+            _this.setConfig("isRandom", _this.isRandom);
+        }
+
+        // Auto move on
+        audio.onended = function() {
+            if (_this.isRepeated) {
+                audio.play();
+            } else {
+                nextBtn.click();
+            }
+        }
+
+        // Repeat song
+        repeatBtn.onclick = function() {
+            _this.isRepeated = !_this.isRepeated;
+            repeatBtn.classList.toggle('active', _this.isRepeated);
+            _this.setConfig("isRepeated", _this.isRepeated);
+        }
+
+        // Play selected song
+        playlist.onclick = function(e) {
+            const songNode = e.target.closest('.song:not(.active)');
+            if (songNode && !e.target.closest('.option')) {
+                _this.currIndex = Number(songNode.dataset.index);
+                _this.loadCurrentSong();
+                _this.render();
+                audio.play();
+            }
+        }
+    },
+
+    scrollToACtiveSong: function() {
+        setTimeout(() => {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }, 500)
+    },
+
+    loadCurrentSong: function() {
+
+        songName.textContent = this.currentSong.name;
+        thumb.style.backgroundImage = `url('${this.currentSong.img}')`
+        audio.src = this.currentSong.path;
+        background.style.backgroundImage = `url('${this.currentSong.img}')`
+    },
+
+    loadConfig: function() {
+        this.isRandom = this.config.isRandom;
+        this.isRepeated = this.config.isRepeated;
+    },
+
+    nextSong: function() {
+        this.currIndex++;
+        if (this.currIndex >= this.songs.length) {
+            this.currIndex = 0;
+        }
+        this.loadCurrentSong();
+    },
+    
+    prevSong: function() {
+        this.currIndex--;
+        if (this.currIndex < 0) {
+            this.currIndex = this.songs.length - 1;
+        }
+        this.loadCurrentSong();
+    },
+
+    playRandom: function() {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * this.songs.length);
+        } while (newIndex === this.currIndex)
+        this.currIndex = newIndex;
+        this.loadCurrentSong();
+    },
+
+    start: function() {
+        //Object definition
+        this.defineProperties();
+        // Events Listener / Handler
+        this.handleEvents();
+        // Load first song of playlist into Dashboard
+        this.loadCurrentSong();
+        // Playlists Rendering
+        this.render();
+
+        // Load config
+        this.loadConfig();
+        rdnBtn.classList.toggle('active', this.isRandom);
+        repeatBtn.classList.toggle('active', this.isRepeated);
+    },
+}
+
+app.start();
