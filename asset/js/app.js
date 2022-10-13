@@ -10,7 +10,7 @@ const $ = document.querySelector.bind(document);
                 name: 'Queen Of Disaster',
                 singer: 'Lana Del Rey',
                 path: './asset/songs/QueenOfDisaster.mp3',
-                img: './asset/images/Lana_Del_Rey.JPG'
+                img: './asset/images/Lana_Del_Rey.jpg'
             },
             {
                 name: 'Wanna Go Home',
@@ -22,31 +22,31 @@ const $ = document.querySelector.bind(document);
                 name: 'Church Girl',
                 singer: 'Beyonce',
                 path: './asset/songs/CHURCHGIRL.mp3',
-                img: './asset/images/beyonce.JPG'
+                img: './asset/images/beyonce.jpg'
             },
             {
                 name: 'Cuff It',
                 singer: 'Beyonce',
                 path: './asset/songs/CUFFIT.mp3',
-                img: './asset/images/beyonce.JPG'
+                img: './asset/images/beyonce.jpg'
             },
             {
                 name: 'I Like You (A Happier Song)',
                 singer: 'Post Malone ft.Doja Cat',
                 path: './asset/songs/ILikeYou.mp3',
-                img: './asset/images/postmalone.JPG'
+                img: './asset/images/postmalone.jpg'
             },
             {
                 name: 'Say So (MTV 2020)',
                 singer: 'Doja Cat',
                 path: 'asset/songs/SaySo.mp3',
-                img: 'asset/images/dojacat.JPG'
+                img: 'asset/images/dojacat.jpg'
             },
             {
                 name: 'Oxytocin',
                 singer: 'Billie Eilish',
                 path: './asset/songs/oxytocin.mp3',
-                img: './asset/images/billieeilish.JPG'
+                img: './asset/images/billieeilish.jpg'
             },
         ],
         
